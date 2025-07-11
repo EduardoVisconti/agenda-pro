@@ -69,7 +69,7 @@ src/
 
 1. Clone the repo:
    \`\`\`bash
-   git clone https://github.com/YOUR_USERNAME/agenda-pro.git
+   git clone https://github.com/EduardoVisconti/agenda-pro.git
    cd agenda-pro
    \`\`\`
 
