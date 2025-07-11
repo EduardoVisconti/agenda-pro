@@ -6,17 +6,19 @@ const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // NOVO
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      setLoading(false); // SÓ QUANDO TERMINA
     });
 
     return () => unsubscribe();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user }}>
+    <UserContext.Provider value={{ user, loading }}>
       {children}
     </UserContext.Provider>
   );
@@ -25,4 +27,3 @@ export function UserProvider({ children }) {
 export function useUser() {
   return useContext(UserContext);
 }
-export default UserContext;
