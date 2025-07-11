@@ -1,12 +1,99 @@
-# React + Vite
+'# 📅 Agenda Pro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern appointment scheduling web app built with **React**, **Firebase**, and **Tailwind CSS**, designed for independent professionals such as therapists, coaches, and personal trainers.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔐 Firebase Authentication (email & password)
+- 👤 Persistent user login
+- 🔒 Private and protected routes
+- 📊 Dashboard with appointments overview
+- ➕ Modal to create new appointments (work in progress)
+- ⚙️ Scalable folder structure (components, pages, context, services)
+- 💅 Tailwind CSS for responsive styling
+- 🌙 Dark mode-ready structure (planned)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Stack
+
+- React (with Vite)
+- Firebase (Auth + Firestore)
+- Tailwind CSS
+- React Router DOM
+- Headless UI (for modal)
+
+---
+
+## 📁 Project Structure
+
+\`\`\`
+src/
+├── components/
+│ ├── Layout.jsx
+│ ├── Sidebar.jsx
+│ ├── Header.jsx
+│ └── AppointmentModal.jsx
+├── context/
+│ └── UserContext.jsx
+├── pages/
+│ ├── Login.jsx
+│ ├── Dashboard.jsx
+│ ├── Appointments.jsx
+│ ├── Clients.jsx
+│ └── Calendar.jsx
+├── services/
+│ └── firebase.js
+├── styles/
+│ └── global.css
+└── App.jsx
+\`\`\`
+
+---
+
+## ✅ To-Do
+
+- [x] Firebase authentication
+- [x] Dashboard structure
+- [x] Layout with sidebar + routing
+- [x] Appointment modal trigger
+- [ ] Modal UI styling and animation
+- [ ] Edit/Delete appointment logic
+- [ ] User-specific appointment filtering
+
+---
+
+## 🧪 Setup Locally
+
+1. Clone the repo:
+   \`\`\`bash
+   git clone https://github.com/YOUR_USERNAME/agenda-pro.git
+   cd agenda-pro
+   \`\`\`
+
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
+
+3. Add your Firebase config to \`/src/services/firebase.js\`
+
+4. Start the dev server:
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+
+---
+
+## 📸 Preview
+
+Coming soon!
+
+---
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
+'
