@@ -29,9 +29,6 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, [user]);
 
-  console.log("Modal está aberto?", isModalOpen);
-
-
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "appointments", id));
   };
@@ -54,14 +51,15 @@ export default function Dashboard() {
   return (
     <div className="p-6 text-white">
       <button
-        onClick={() => setIsModalOpen(true)}
-        className="bg-red-600 px-4 py-2 text-white rounded z-50"
-      >
-        NEW APPOINTMENT
-      </button>
+      onClick={(e) => {
+        e.currentTarget.blur(); // Remove o foco do botão
+        setIsModalOpen(true);   // Abre o modal
+      }}
+      className="bg-red-600 px-4 py-2 text-white rounded"
+    >
+      NEW APPOINTMENT
+    </button>
 
-
-      {isModalOpen && <p className="text-red-500">MODAL ABERTO</p>}
 
       {appointments.length === 0 ? (
         <p>No appointments yet.</p>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
 import { db } from "../services/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
@@ -43,6 +43,7 @@ export default function AppointmentModal({ isOpen, setIsOpen, onAppointmentAdded
       });
 
       onAppointmentAdded({ id: docRef.id, ...form, date: formattedDate.toISOString() });
+
       setForm({
         name: "",
         service: "",
@@ -62,77 +63,69 @@ export default function AppointmentModal({ isOpen, setIsOpen, onAppointmentAdded
   const minutesList = ["00", "15", "30", "45"];
 
   return (
-    <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-      <div className="fixed inset-0 bg-black bg-opacity-40" aria-hidden="true" />
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-[9999]" onClose={() => setIsOpen(false)} initialFocus={undefined}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-50" />
+        </Transition.Child>
 
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <Dialog.Panel className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-          <Dialog.Title className="text-lg font-semibold mb-4 text-gray-800">
-            New Appointment
-          </Dialog.Title>
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-red-300">
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Client name"
-              required
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              name="service"
-              value={form.service}
-              onChange={handleChange}
-              placeholder="Service"
-              required
-              className="border p-2 rounded"
-            />
-            <input
-              type="date"
-              name="date"
-              value={form.date}
-              onChange={handleChange}
-              required
-              className="border p-2 rounded"
-            />
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 z-[9999] border-2 border-green-500">
 
-            <div className="flex gap-2">
-              <select name="hour" value={form.hour} onChange={handleChange} className="border p-2 rounded w-full">
-                {hours.map((h) => (
-                  <option key={h} value={h}>{h}</option>
-                ))}
-              </select>
+                <Dialog.Title className="text-lg font-medium text-gray-900 mb-4">New Appointment</Dialog.Title>
 
-              <select name="minutes" value={form.minutes} onChange={handleChange} className="border p-2 rounded w-full">
-                {minutesList.map((m) => (
-                  <option key={m} value={m}>{m}</option>
-                ))}
-              </select>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
+                  <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Client name" required className="border p-2 rounded" />
+                  <input type="text" name="service" value={form.service} onChange={handleChange} placeholder="Service" required className="border p-2 rounded" />
+                  <input type="date" name="date" value={form.date} onChange={handleChange} required className="border p-2 rounded" />
 
-              <select name="period" value={form.period} onChange={handleChange} className="border p-2 rounded w-full">
-                <option value="AM">AM</option>
-                <option value="PM">PM</option>
-              </select>
-            </div>
+                  <div className="flex gap-2">
+                    <select name="hour" value={form.hour} onChange={handleChange} className="border p-2 rounded w-full">
+                      {hours.map((h) => (
+                        <option key={h} value={h}>{h}</option>
+                      ))}
+                    </select>
 
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={handleChange}
-              placeholder="Notes (optional)"
-              rows="3"
-              className="border p-2 rounded"
-            />
+                    <select name="minutes" value={form.minutes} onChange={handleChange} className="border p-2 rounded w-full">
+                      {minutesList.map((m) => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
 
-            <button type="submit" className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
-              Save
-            </button>
-          </form>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
+                    <select name="period" value={form.period} onChange={handleChange} className="border p-2 rounded w-full">
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+
+                  <textarea name="notes" value={form.notes} onChange={handleChange} placeholder="Notes (optional)" rows="3" className="border p-2 rounded" />
+
+                  <button type="submit" className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">Save</button>
+                </form>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
   );
 }
