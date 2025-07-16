@@ -37,23 +37,34 @@ export default function Dashboard() {
     setSelectedAppointment(appointment);
     setEditModalOpen(true);
   };
-
+  
   const handleSaveEdit = async (updatedData) => {
     const ref = doc(db, "appointments", updatedData.id);
-    const { id, ...rest } = updatedData;
-    await updateDoc(ref, rest);
+    const { id, date, ...rest } = updatedData;
+
+    const hour24 =
+      updatedData.period === "PM" && updatedData.hour !== "12"
+        ? parseInt(updatedData.hour) + 12
+        : updatedData.period === "AM" && updatedData.hour === "12"
+        ? 0
+        : parseInt(updatedData.hour);
+
+    const isoDate = new Date(`${updatedData.date}T${String(hour24).padStart(2, "0")}:${updatedData.minutes}:00`).toISOString();
+    
+
+    await updateDoc(ref, {
+      ...rest,
+      date: isoDate,
+    });
   };
 
-  const handleAppointmentAdded = (newAppt) => {
-    setAppointments((prev) => [...prev, newAppt]);
-  };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <button
       onClick={(e) => {
         e.currentTarget.blur(); // Remove o foco do botão
-        setIsModalOpen(true);   // Abre o modal
+        setIsModalOpen(true);   // Open modal
       }}
       className="bg-red-600 px-4 py-2 text-white rounded"
     >
@@ -77,14 +88,13 @@ export default function Dashboard() {
       <AppointmentModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        onAppointmentAdded={handleAppointmentAdded}
       />
 
       <EditAppointmentModal
         isOpen={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        onSave={handleSaveEdit}
+        setIsOpen={setEditModalOpen}
         appointment={selectedAppointment}
+        onSave={handleSaveEdit}
       />
     </div>
   );

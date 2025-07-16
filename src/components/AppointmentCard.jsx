@@ -14,7 +14,10 @@ export default function AppointmentCard({ appointment, onDelete, onEdit }) {
       )}
       <div className="flex gap-2 mt-3">
         <button
-          onClick={() => onEdit(appointment)}
+          onClick={(e) => {
+            e.currentTarget.blur(); // <- tira o foco antes de abrir o modal
+            onEdit(appointment);
+          }}
           className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
         >
           Edit

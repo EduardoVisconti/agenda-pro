@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import { db } from "../services/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-export default function AppointmentModal({ isOpen, setIsOpen, onAppointmentAdded }) {
+export default function AppointmentModal({ isOpen, setIsOpen }) {
   const [form, setForm] = useState({
     name: "",
     service: "",
@@ -36,13 +36,11 @@ export default function AppointmentModal({ isOpen, setIsOpen, onAppointmentAdded
     const formattedDate = new Date(`${date}T${String(hour24).padStart(2, "0")}:${minutes}:00`);
 
     try {
-      const docRef = await addDoc(collection(db, "appointments"), {
+      await addDoc(collection(db, "appointments"), {
         ...rest,
         date: formattedDate.toISOString(),
         createdAt: serverTimestamp(),
       });
-
-      onAppointmentAdded({ id: docRef.id, ...form, date: formattedDate.toISOString() });
 
       setForm({
         name: "",
@@ -90,6 +88,14 @@ export default function AppointmentModal({ isOpen, setIsOpen, onAppointmentAdded
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 z-[9999] border-2 border-green-500">
+
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
 
                 <Dialog.Title className="text-lg font-medium text-gray-900 mb-4">New Appointment</Dialog.Title>
 
